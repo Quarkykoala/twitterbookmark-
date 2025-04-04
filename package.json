@@ -1,0 +1,21 @@
+{
+  "name": "twitterbookmark",
+  "version": "1.0.0",
+  "description": "Transform Twitter bookmarks into a searchable, organized second brain with AI summarization.",
+  "main": "background.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/styles.css -o ./popup/styles.css --minify",
+    "watch:css": "tailwindcss -i ./src/styles.css -o ./popup/styles.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.3.1"
+  }
+}

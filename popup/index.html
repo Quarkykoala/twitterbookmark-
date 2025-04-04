@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookmark OS</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="font-sans bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100">
+  <div class="w-[400px] h-[600px] flex flex-col">
+    <!-- Header -->
+    <header class="px-6 pt-6 pb-4 flex justify-between items-center">
+      <h1 class="text-3xl font-bold text-center flex-1">Bookmark OS</h1>
+      <button id="themeToggleBtn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+        <svg id="themeIconLight" class="h-6 w-6 text-gray-700 dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <svg id="themeIconDark" class="h-6 w-6 text-gray-300 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </button>
+    </header>
+
+    <!-- Search -->
+    <div class="px-6 mb-6">
+      <div class="relative">
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="w-full p-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400"
+          placeholder="Search bookmarks..."
+        >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute left-3 top-2.5 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- Bookmark List -->
+    <div id="bookmarkList" class="flex-1 overflow-y-auto px-6">
+      <!-- Empty state -->
+      <div id="emptyState" class="flex flex-col items-center justify-center h-full">
+        <div class="w-32 h-32 mb-8">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-gray-900 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Bookmark items will be inserted here by JavaScript -->
+    </div>
+
+    <!-- Filter Buttons -->
+    <div id="filterButtons" class="p-6 flex space-x-2">
+      <button class="filter-btn flex-1 py-2.5 px-4 bg-gray-100 dark:bg-gray-700 rounded-lg text-center font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition" data-filter="all">All</button>
+      <button class="filter-btn flex-1 py-2.5 px-4 bg-gray-100 dark:bg-gray-700 rounded-lg text-center font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition" data-filter="unread">Unread</button>
+      <button class="filter-btn flex-1 py-2.5 px-4 bg-gray-100 dark:bg-gray-700 rounded-lg text-center font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition" data-filter="random">Random</button>
+    </div>
+
+    <!-- Add Bookmark Button - visible in bottom right -->
+    <button id="addBookmarkBtn" class="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg transition">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Add Bookmark Modal (hidden by default) -->
+  <div id="addBookmarkModal" class="hidden fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center p-4 z-50">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md flex flex-col" style="max-height: 80vh;">
+      <!-- Header - Fixed -->
+      <div class="flex justify-between items-center p-4 border-b dark:border-gray-700 flex-shrink-0">
+        <h2 class="text-lg font-bold dark:text-gray-100">Add Bookmark</h2>
+        <button id="closeModalBtn" data-close-modal="addBookmarkModal" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+      
+      <form id="bookmarkForm" class="flex flex-col h-full">
+        <!-- Content - Scrollable -->
+        <div class="p-4 overflow-y-auto" style="max-height: calc(80vh - 130px);">
+          <div class="mb-4">
+            <label for="bookmarkUrl" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">URL*</label>
+            <input type="url" id="bookmarkUrl" name="url" required class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
+          </div>
+          <div class="mb-4">
+            <label for="bookmarkTitle" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title*</label>
+            <input type="text" id="bookmarkTitle" name="title" required class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
+          </div>
+          <div class="mb-4">
+            <label for="bookmarkTags" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tags (comma separated)</label>
+            <input type="text" id="bookmarkTags" name="tags" placeholder="twitter, thread, important" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-500">
+          </div>
+          <div class="mb-4">
+            <label for="bookmarkNotes" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notes</label>
+            <textarea id="bookmarkNotes" name="notes" rows="3" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"></textarea>
+          </div>
+          <div id="aiSummarySection" class="mb-4 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg border dark:border-gray-700">
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">AI Summary</label>
+              <span class="text-xs px-2 py-0.5 bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300 rounded-full">✨ Premium</span>
+            </div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Get an AI-generated summary of the tweet or thread.</p>
+            <button type="button" id="generateSummaryBtn" disabled class="w-full bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-400 py-2 px-3 rounded-lg text-sm font-medium">
+              Upgrade to Premium
+            </button>
+          </div>
+        </div>
+        
+        <!-- Buttons - Fixed at bottom using absolute positioning -->
+        <div class="p-4 border-t dark:border-gray-700 bg-white dark:bg-gray-800 flex-shrink-0">
+          <div class="flex justify-end space-x-2">
+            <button type="button" id="cancelBookmarkBtn" data-close-modal="addBookmarkModal" class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded-lg transition">
+              Cancel
+            </button>
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition">
+              Save Bookmark
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="hidden fixed bottom-4 right-4 bg-gray-800 dark:bg-gray-700 text-white py-2 px-4 rounded shadow-lg transition-opacity">
+    Bookmark saved successfully!
+  </div>
+
+  <script src="../components/BookmarkList.js" type="module"></script>
+  <script src="../components/Modal.js" type="module"></script>
+  <script src="script.js" type="module"></script>
+</body>
+</html> 

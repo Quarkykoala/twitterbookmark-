@@ -1,0 +1,217 @@
+description: |
+  Cursor Project: Bookmark OS — Definitive LLMese Rule Set
+  PURPOSE: Enforce logical, maintainable, secure, and AI-optimized collaboration through formal constraint logic.
+
+========================
+CORE PRINCIPLES (Φ)
+========================
+∀ function f ∈ codebase: simplicity(f) > cleverness(f)
+∀ edit e ∈ pull_request: scope(e) ≈ scope(task_assigned)
+∄ unrelated_change(e) ⇔ reject(e)
+
+∀ new_solution s: prefer(s ∈ existing_codebase) ⇒ true
+if ∄ s_existing ⇒ propose_new(s) ∧ document(s)
+
+quality(code) ∝ (readability + testability + scalability)
+
+========================
+FILE STRUCTURE (FS ⊆ Repo)
+========================
+FS := {
+  popup/, components/, lib/, types/, scripts/, assets/, docs/, tests/, fixes/
+}
+
+popup/ := static UI (HTML + script.js + styles.css)  
+lib/ := { aiSummary.js, storage.js, supabase.js, export.js }  
+types/ := { bookmark.d.ts ∨ bookmark.jsdoc.js }  
+scripts/ := { zip.sh, testRunner.js }  
+docs/ := { architecture.md, technical.md, status.md, tasks.md }  
+
+LOC(file) ≤ 300 ⇒ OK  
+LOC(file) > 300 ⇒ enforce(split_by_responsibility)
+
+========================
+TWITTER BOOKMARK ACCESS (TBA)
+========================
+TBA := web_scraping(DOM)
+∵ twitter_api_access(bookmarks) = false
+
+content_script_pattern := {
+  target: "https://twitter.com/i/bookmarks",
+  extract: [tweet_urls, tweet_text, timestamps, thread_structure],
+  communicate: chrome.runtime.sendMessage
+}
+
+handle_fragile_DOM(twitter) := {
+  robust_selectors,
+  fallback_strategies,
+  version_detection
+}
+
+========================
+MVP FEATURES & TIMELINE (MVP ⊆ features)
+========================
+MVP := {
+  manual_tweet_add,
+  search_filter,
+  local_storage,
+  dark_mode,
+  minimal_ui,
+  bookmark_cleaner
+}
+
+MVP_timeline := 1-2 days
+MVP_v0.1 := day_1{form, search, storage, UI, manual_add}
+MVP_v0.2 := day_2{DOM_scraping, AI_summary, markdown_export}
+
+browser_support := chrome_only(manifest_v3)
+firefox_support ∈ future_roadmap
+
+========================
+PREMIUM PRICING MODEL (PPM)
+========================
+PPM := {
+  free: {price: $0, features: [basic_bookmarks(100), manual_input, search, tags]},
+  pro: {price: $5/month, features: Ω},
+  team: {price: $20/month, features: Ω ∪ [multi_user, shared_tags, team_notes]}
+}
+
+target_revenue := $4000/month
+target_users := 800 @ $5/user
+
+========================
+AI INTERACTION RULES (Ψ)
+========================
+∀ AI_task t:
+  define(t.goal), define(t.constraints), define(t.scope)
+  context(t) := memory ⊕ user_prompt ⊕ file_refs
+
+∀ multi_step_task T: T := ⨁ step_i 
+∀ step_i ∈ T: confirm(step_i.result) ⇒ proceed(step_{i+1})
+
+trust(AI_suggestion) ⇔ human_review_passed(suggestion)
+
+clarify(intent) ⇔ prefix("Suggestion:") ∨ prefix("Applying fix:")
+
+========================
+PREMIUM GATING (Ω)
+========================
+Ω := { aiSummary, markdownExport, digestReminders }
+
+∀ feature ω ∈ Ω:  
+  render(ω) ⇔ user.isPremium === true
+
+⬇️ PREMIUM START
+// gated logic
+⬆️ PREMIUM END
+
+========================
+TESTING (T ⊆ tasks)
+========================
+∀ new_feature f:
+  TDD(f) := { write_failing_test(f), implement(f), pass_test(f) }
+
+∀ bugfix b:
+  test(b) := reproduce_bug_test(b) ∧ pass(b)
+
+mock_data(dev ∨ prod) := false  
+mock_data(test) := true
+
+test_pass_all() ⇒ allow_commit()
+
+========================
+PERFORMANCE (π)
+========================
+page_load ≤ 2s ∧ debounce(user_input, 300ms)
+∀ animation a: duration(a) ≤ 300ms
+
+feedback(UI_component) ⊇ { loading, error, empty }
+
+========================
+ACCESSIBILITY (α)
+========================
+∀ element e ∈ UI:
+  semantic(e) ⇒ true
+  ARIA(e) ⇒ true
+  keyboard_access(e) ⇒ true
+
+α(e) ⇒ WCAG 2.1 AA compliance
+
+========================
+SECURITY (σ)
+========================
+∄ secrets ∈ committed_code
+∀ input u: sanitize(u) ∧ validate(u)
+∄ PII ∈ localStorage
+
+premium_flag := (isPremium ∈ user_record)
+auth_token ∈ chrome.storage.local
+
+========================
+DOCUMENTATION (Δ)
+========================
+∀ change c ∈ system:
+  if affects(architecture ∨ behavior ∨ config) ⇒ update(docs/*)
+  update(README.md) ⇔ new_patterns ∨ major_feature
+
+.env ⇒ NEVER committed
+.env.example ⊇ required_keys(∅ secrets)
+
+========================
+DEBUGGING (δ)
+========================
+root_cause(error) ⇒ fix(error) 
+log := targeted, not verbose
+
+fixes/ := historical_root_cause_solutions
+∀ hard_bug β ⇒ write(fixes/β.md)
+
+========================
+TWITTER LIMITATIONS (TL)
+========================
+TL := {
+  no_official_api,
+  not_available_offline,
+  no_metadata_support,
+  fragile_DOM
+}
+
+mitigations(TL) := {
+  local_storage_after_scraping,
+  user_metadata_addition,
+  visible_tweets_only_warning,
+  partial_export_support
+}
+
+========================
+DEPLOYMENT OPTIONS (Λ)
+========================
+Λ := {
+  Chrome Web Store (requires dev fee),
+  Manual Install (via dev mode),
+  GitHub releases (signed .zip)
+}
+
+README ⊇ Λ
+
+========================
+VERSION CONTROL (ν)
+========================
+ν(commit) := atomic ∧ descriptive
+ν(branch) := scoped_to_task ∧ conform_to_strategy
+ν(pre_merge) := pass(CI ∧ tests ∧ lint)
+
+gitignore ⊇ transient_artifacts ∪ secrets ∪ .env
+
+========================
+DEVELOPER MINDSET (μ)
+========================
+∀ code_line ℓ:
+  write(ℓ) as if 100,000 users depend_on(ℓ)
+
+ask(ℓ):
+  "Will I understand you in 3 months?" ∧
+  "Would I trust you at 2am during prod downtime?"
+
+Bookmark OS ≠ hack; it = augment(memory, agency)
+Build(Bookmark OS) := pride ∧ precision ∧ permanence
