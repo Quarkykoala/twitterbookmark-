@@ -19,7 +19,7 @@ Transform Twitter bookmarks into a searchable, organized second brain with AI su
 
 1. Clone this repository:
    ```
-   git clone https://github.com/yourusername/bookmark-os.git
+   git clone https://github.com/Quarkykoala/twitterbookmark-.git
    ```
 
 2. Open Chrome and navigate to `chrome://extensions/`
@@ -104,4 +104,4 @@ bookmark-os/
 ## Acknowledgements
 
 - Icons provided by [Heroicons](https://heroicons.com/)
-- Built with [TailwindCSS](https://tailwindcss.com/) 
+- Built with [TailwindCSS](https://tailwindcss.com/)
